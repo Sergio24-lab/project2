@@ -1,0 +1,32 @@
+﻿@{
+    ViewBag.Title = "Chatbot";
+}
+
+<h2>Chatbot</h2>
+
+<div id="chat">
+    <div id="chat-history"></div>
+    <input type="text" id="user-message" placeholder="Type your message here..." />
+    <button id="send-button">Send</button>
+</div>
+
+@section scripts {
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#send-button').click(function () {
+                var message = $('#user-message').val();
+                $.ajax({
+                    url: '@Url.Action("SendMessage", "Chatbot")',
+                    type: 'POST',
+                    data: { message: message },
+                    success: function (data) {
+                        $('#chat-history').append('<div>User: ' + message + '</div>');
+                        $('#chat-history').append('<div>Bot: ' + data.response + '</div>');
+                        $('#user-message').val('');
+                    }
+                });
+            });
+        });
+    </script>
+}

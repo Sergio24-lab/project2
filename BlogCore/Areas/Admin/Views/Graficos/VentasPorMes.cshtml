@@ -1,0 +1,77 @@
+﻿@{
+    ViewData["Title"] = "Ventas por Mes";
+}
+
+<h2>Ventas por Mes</h2>
+
+<canvas id="graficoVentasPorMes" width="800" height="400"></canvas>
+<button id="btnGenerarPdf" class="btn btn-primary mt-3"><i class="fas fa-file-pdf"></i>Generar PDF</button>
+
+@section scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+    <script>
+        var ctx = document.getElementById('graficoVentasPorMes').getContext('2d');
+        var meses = @Html.Raw(Json.Serialize(ViewBag.Meses));
+        var totalesPorMes = @Html.Raw(Json.Serialize(ViewBag.TotalesPorMes));
+
+        var graficoVentasPorMes = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: meses,
+                datasets: [{
+                    label: 'Total de Ventas por Mes',
+                    data: totalesPorMes,
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Total de Ventas ($)'
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Meses'
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                }
+            }
+        });
+
+        document.getElementById('btnGenerarPdf').addEventListener('click', function () {
+            var canvas = document.getElementById('graficoVentasPorMes');
+            var dataUrl = canvas.toDataURL('image/png');
+            var formData = new FormData();
+            formData.append('imageData', dataUrl);
+
+            fetch('/Admin/Graficos/GenerarPdf', {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        window.location.href = data.pdfUrl;
+                    } else {
+                        toastr.error(data.message);
+                    }
+                })
+                .catch(error => {
+                    toastr.error("Error al generar el PDF.");
+                    console.error('Error al generar el PDF:', error);
+                });
+        });
+    </script>
+}

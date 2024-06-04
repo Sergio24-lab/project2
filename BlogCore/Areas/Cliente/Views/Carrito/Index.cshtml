@@ -1,0 +1,81 @@
+﻿@model BlogCore.Models.Carrito
+
+@{
+    ViewData["Title"] = "Carrito de Compras";
+}
+
+<h2>Carrito de Compras</h2>
+
+@if (Model.Items.Count > 0)
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Producto</th>
+                <th>Cantidad</th>
+                <th>Precio</th>
+                <th>Total</th>
+                <th>Acciones</th> <!-- Nueva columna para acciones -->
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Items)
+            {
+                <tr>
+                    <td>@item.Nombre</td>
+                    <td>@item.Cantidad</td>
+                    <td>@item.Precio.ToString("C")</td>
+                    <td>$@(item.Cantidad * item.Precio)</td>
+                    <td>
+                        <button class="btn btn-danger btn-sm eliminarProductoBtn" data-id="@item.ArticuloId">Eliminar</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <h3>Total a pagar: <span id="totalPagar">@Model.Items.Sum(x => x.Cantidad * x.Precio).ToString("C")</span></h3>
+
+    <button id="procesarPagoBtn" class="btn btn-success">Procesar Pago</button>
+}
+else
+{
+    <p>No hay productos en el carrito.</p>
+}
+
+<script>
+    document.querySelectorAll('.eliminarProductoBtn').forEach(button => {
+        button.addEventListener('click', function () {
+            const productoId = this.getAttribute('data-id');
+
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("EliminarProducto", "Carrito", new { area = "Cliente" })',
+                data: { id: productoId },
+                success: function (data) {
+                    if (data.success) {
+                        toastr.success('Producto eliminado del carrito.');
+                        location.reload(); // Recargar la página para reflejar los cambios
+                    } else {
+                        toastr.error('Hubo un error al eliminar el producto.');
+                    }
+                }
+            });
+        });
+    });
+
+    document.getElementById('procesarPagoBtn').addEventListener('click', function () {
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("ProcesarPago", "Carrito", new { area = "Cliente" })',
+            success: function (data) {
+                if (data.success) {
+                    toastr.success(data.message);
+                    window.location.href = data.pdfUrl;
+                } else {
+                    toastr.error(data.message);
+                }
+            }
+        });
+    });
+</script>

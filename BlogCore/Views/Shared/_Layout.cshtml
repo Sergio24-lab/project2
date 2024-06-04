@@ -1,0 +1,255 @@
+﻿@using BlogCore.Utilidades
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Descripción del sitio web Digito." />
+    <meta name="keywords" content="blog, Digito, artículos, categorías" />
+    <title>@ViewData["Title"] - Digito</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap5.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+
+    <!--Css todos-->
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.0.0/css/dataTables.dataTables.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/themes/base/jquery-ui.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+    <style>
+        :root {
+            --bg-color: #fff;
+            --text-color: #000;
+            --navbar-bg: #593196;
+            --navbar-text: #fff;
+        }
+
+        [data-theme="dark"] {
+            --bg-color: #333;
+            --text-color: #fff;
+            --navbar-bg: #222;
+            --navbar-text: #fff;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+        }
+
+        .navbar-custom {
+            background-color: var(--navbar-bg);
+            border-radius: 0;
+        }
+
+            .navbar-custom .nav-link,
+            .navbar-custom .navbar-brand {
+                color: var(--navbar-text);
+            }
+
+                .navbar-custom .nav-link:hover,
+                .navbar-custom .dropdown-item:hover {
+                    color: #f8f9fa;
+                    background-color: #9c8eff;
+                }
+
+        .dropdown-menu {
+            background-color: var(--navbar-bg);
+        }
+
+        .dropdown-item {
+            color: var(--navbar-text);
+        }
+
+        .dropdown-menu .dropdown-item:hover {
+            background-color: #9c8eff; /* Cambia este color al lila deseado */
+        }
+    </style>
+
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-XXXXX-Y"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'UA-XXXXX-Y');
+    </script>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-custom">
+        <div class="container">
+            <a class="navbar-brand" href="/"><img src="~/imagenes/Logo_Digito.png" width="80" alt="Digito Logo" /></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarColor02">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link text-white active" aria-current="page" href="/">Inicio</a>
+                    </li>
+                    @if (User.IsInRole(CNT.Administrador))
+                    {
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle text-white" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Administrador
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li><a class="dropdown-item" asp-area="Admin" asp-controller="Sliders" asp-action="Index">Sliders</a></li>
+                                <li><a class="dropdown-item" asp-area="Admin" asp-controller="Usuarios" asp-action="Index">Usuarios</a></li>
+                                <li><a class="dropdown-item" asp-area="Admin" asp-controller="Proveedores" asp-action="Index">Proveedores</a></li>
+                                <li><a class="dropdown-item" asp-area="Admin" asp-controller="Empleado" asp-action="Index">Empleados</a></li>
+                                <li><a class="dropdown-item" asp-area="Admin" asp-controller="Graficos" asp-action="ComprasPorFecha">Compra Reporte</a></li>
+                                <li><a class="dropdown-item" asp-area="Admin" asp-controller="Graficos" asp-action="VentasPorMes">Venta Reporte</a></li>
+                                <li><a class="dropdown-item" asp-area="Cliente" asp-controller="Home" asp-action="ChatBot">Jarvis</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="Admin" asp-controller="Categorias" asp-action="Index">Categorías</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="Admin" asp-controller="Articulos" asp-action="Index">Artículos</a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link text-white active" asp-area="Cliente" asp-controller="Home" asp-action="ChatBot">Jarvis</a>
+                        </li>
+                    }
+                </ul>
+
+                <form class="d-flex ms-auto" asp-controller="Home" asp-action="ResultadoBusqueda" method="get">
+                    <div class="input-group">
+                        <input class="form-control" type="search" name="searchString" placeholder="Buscar..." aria-label="Buscar">
+                        <button class="btn btn-outline-success" type="submit">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </form>
+
+                <div class="d-flex align-items-center ms-3">
+                    <partial name="_LoginPartial" />
+                    &nbsp;
+                    &nbsp;
+                    &nbsp;
+                    &nbsp;
+                    &nbsp;
+                    &nbsp;
+                    &nbsp;
+                    <div class="form-check form-switch theme-switch">
+                        <input class="form-check-input" type="checkbox" id="themeSwitch">
+                        <label class="form-check-label text-white" for="themeSwitch">Modo Oscuro</label>
+                    </div>
+                    <br />
+                </div>
+            </div>
+        </div>
+    </nav>
+
+
+    @if (ViewBag.IsHome == true)
+    {
+        <partial name="_Slider" />
+    }
+
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <!--Banner-->
+    <div class="container-fluid banner-container">
+        <div class="container banner-content">
+        </div>
+    </div>
+
+    <footer class="border-top footer text-muted bg-dark" style="background-color: #1a1a1a !important;">
+        <div class="container py-4">
+            <span class="text-white">&copy; 2024 - Digito -</span> <a href="" class="text-white">Desarrollado por Projec7</a>
+            <div class="social-icons">
+                <a href="https://www.facebook.com" class="text-white me-2"><i class="fab fa-facebook-f"></i></a>
+                <a href="https://www.twitter.com" class="text-white me-2"><i class="fab fa-twitter"></i></a>
+                <a href="https://www.instagram.com" class="text-white me-2"><i class="fab fa-instagram"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <!--Js plugins-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js"></script>
+    <script src="https://cdn.datatables.net/2.0.0/js/dataTables.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.4/toastr.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+
+    <!-- Lazy loading for images -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var lazyloadImages = document.querySelectorAll("img.lazy");
+            var lazyloadThrottleTimeout;
+
+            function lazyload() {
+                if (lazyloadThrottleTimeout) {
+                    clearTimeout(lazyloadThrottleTimeout);
+                }
+
+                lazyloadThrottleTimeout = setTimeout(function () {
+                    var scrollTop = window.pageYOffset;
+                    lazyloadImages.forEach(function (img) {
+                        if (img.offsetTop < (window.innerHeight + scrollTop)) {
+                            img.src = img.dataset.src;
+                            img.classList.remove('lazy');
+                        }
+                    });
+                    if (lazyloadImages.length == 0) {
+                        document.removeEventListener("scroll", lazyload);
+                        window.removeEventListener("resize", lazyload);
+                        window.removeEventListener("orientationChange", lazyload);
+                    }
+                }, 20);
+            }
+
+            document.addEventListener("scroll", lazyload);
+            window.addEventListener("resize", lazyload);
+            window.addEventListener("orientationChange", lazyload);
+        });
+    </script>
+
+    <!-- Theme Toggle -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const toggleSwitch = document.querySelector('.theme-switch input[type="checkbox"]');
+            const currentTheme = localStorage.getItem('theme');
+
+            if (currentTheme) {
+                document.documentElement.setAttribute('data-theme', currentTheme);
+
+                if (currentTheme === 'dark') {
+                    toggleSwitch.checked = true;
+                }
+            }
+
+            function switchTheme(e) {
+                if (e.target.checked) {
+                    document.documentElement.setAttribute('data-theme', 'dark');
+                    localStorage.setItem('theme', 'dark');
+                }
+                else {
+                    document.documentElement.setAttribute('data-theme', 'light');
+                    localStorage.setItem('theme', 'light');
+                }
+            }
+
+            toggleSwitch.addEventListener('change', switchTheme, false);
+        });
+    </script>
+
+</body>
+</html>
+
+

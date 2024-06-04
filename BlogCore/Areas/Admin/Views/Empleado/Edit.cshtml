@@ -1,0 +1,141 @@
+﻿@model BlogCore.Models.Empleado
+
+@{
+    ViewData["Title"] = "Editar Empleado";
+}
+
+<br />
+<br />
+<h3 class="text-center">Editar empleado</h3>
+<form method="POST" asp-action="Edit">
+    <div class="row px-2 offset-1 border">
+        <div asp-validation-summary="All" class="text-danger"></div>
+
+        <div class="col-10 offset-1 mt-4">
+            <div class="form-group row">
+                <div class="col-4">
+                    <label asp-for="Nombre"></label>
+                </div>
+                <div class="col-8">
+                    <input asp-for="Nombre" class="form-control" placeholder="Ingresa el nombre" />
+                    <span asp-validation-for="Nombre" class="text-danger"></span>
+                </div>
+            </div>
+
+            <br />
+
+            <div class="form-group row">
+                <div class="col-4">
+                    <label asp-for="FechaNacimiento"></label>
+                </div>
+                <div class="col-8">
+                    <input asp-for="FechaNacimiento" class="form-control" placeholder="Ingresa la fecha de nacimiento" />
+                    <span asp-validation-for="FechaNacimiento" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!-- Agrega los campos restantes para el formulario de edición del empleado según tus necesidades -->
+
+            <br />
+
+            <div class="form-group row">
+                <div class="col-4">
+                    <label asp-for="Salario"></label>
+                </div>
+                <div class="col-8">
+                    <input asp-for="Salario" class="form-control" placeholder="Ingresa el salario" />
+                    <span asp-validation-for="Salario" class="text-danger"></span>
+                </div>
+            </div>
+
+            <br />
+
+            <div class="form-group row">
+                <div class="col-4">
+                    <label asp-for="Direccion"></label>
+                </div>
+                <div class="col-8">
+                    <input asp-for="Direccion" class="form-control" placeholder="Ingresa la dirección" />
+                    <span asp-validation-for="Direccion" class="text-danger"></span>
+                </div>
+            </div>
+
+            <br />
+
+            <div class="form-group row">
+                <div class="col-4">
+                    <label asp-for="CorreoElectronico"></label>
+                </div>
+                <div class="col-8">
+                    <input asp-for="CorreoElectronico" class="form-control" placeholder="Ingresa el correo electrónico" />
+                    <span asp-validation-for="CorreoElectronico" class="text-danger"></span>
+                </div>
+            </div>
+
+            <br />
+
+            <div class="form-group row">
+                <div class="col-4">
+                    <label asp-for="NumeroTelefono"></label>
+                </div>
+                <div class="col-8">
+                    <input asp-for="NumeroTelefono" class="form-control" placeholder="Ingresa el número de teléfono" />
+                    <span asp-validation-for="NumeroTelefono" class="text-danger"></span>
+                </div>
+            </div>
+
+            <br />
+
+            <div class="form-group row">
+                <div class="col-4">
+                    <label asp-for="FechaContratacion"></label>
+                </div>
+                <div class="col-8">
+                    <input asp-for="FechaContratacion" class="form-control" placeholder="Ingresa la fecha de contratación" />
+                    <span asp-validation-for="FechaContratacion" class="text-danger"></span>
+                </div>
+            </div>
+
+            <br />
+
+            <div class="form-group row">
+                <div class="col-4">
+                    <label asp-for="Departamento"></label>
+                </div>
+                <div class="col-8">
+                    <input asp-for="Departamento" class="form-control" placeholder="Ingresa el departamento" />
+                    <span asp-validation-for="Departamento" class="text-danger"></span>
+                </div>
+            </div>
+
+            <br />
+
+            <div class="form-group row">
+                <div class="col-4">
+                    <label asp-for="Cargo"></label>
+                </div>
+                <div class="col-8">
+                    <input asp-for="Cargo" class="form-control" placeholder="Ingresa el cargo" />
+                    <span asp-validation-for="Cargo" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col">
+                    <button type="submit" class="btn btn-primary form-control">Editar Empleado</button>
+                </div>
+                &nbsp;
+                <div class="col">
+                    <a asp-action="Index" class="btn btn-success form-control">Volver atrás</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</form>
+
+@section Scripts {
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+}
