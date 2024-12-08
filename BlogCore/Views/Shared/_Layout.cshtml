@@ -102,14 +102,15 @@
                                 <li><a class="dropdown-item" asp-area="Admin" asp-controller="Graficos" asp-action="ComprasPorFecha">Compra Reporte</a></li>
                                 <li><a class="dropdown-item" asp-area="Admin" asp-controller="Graficos" asp-action="VentasPorMes">Venta Reporte</a></li>
                                 <li><a class="dropdown-item" asp-area="Cliente" asp-controller="Home" asp-action="ChatBot">Jarvis</a></li>
+                                <li class="nav-item">
+                                    <a class="dropdown-item" asp-area="Admin" asp-controller="Categorias" asp-action="Index">Categorías</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="dropdown-item" asp-area="Admin" asp-controller="Articulos" asp-action="Index">Artículos</a>
+                                </li>
                             </ul>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="Admin" asp-controller="Categorias" asp-action="Index">Categorías</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="Admin" asp-controller="Articulos" asp-action="Index">Artículos</a>
-                        </li>
+                        
                     }
                     else
                     {
@@ -119,14 +120,7 @@
                     }
                 </ul>
 
-                <form class="d-flex ms-auto" asp-controller="Home" asp-action="ResultadoBusqueda" method="get">
-                    <div class="input-group">
-                        <input class="form-control" type="search" name="searchString" placeholder="Buscar..." aria-label="Buscar">
-                        <button class="btn btn-outline-success" type="submit">
-                            <i class="fas fa-search"></i>
-                        </button>
-                    </div>
-                </form>
+                
 
                 <div class="d-flex align-items-center ms-3">
                     <partial name="_LoginPartial" />
@@ -137,11 +131,26 @@
                     &nbsp;
                     &nbsp;
                     &nbsp;
+
+                    <form class="d-flex ms-auto" asp-controller="Home" asp-action="ResultadoBusqueda" method="get">
+                        <div class="input-group">
+                            <input class="form-control" type="search" name="searchString" placeholder="Buscar..." aria-label="Buscar">
+                            <button class="btn btn-outline-success" type="submit">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                    </form>
+                    &nbsp;
+                    &nbsp;
+                    &nbsp;
+                    &nbsp;
                     <div class="form-check form-switch theme-switch">
                         <input class="form-check-input" type="checkbox" id="themeSwitch">
                         <label class="form-check-label text-white" for="themeSwitch">Modo Oscuro</label>
                     </div>
                     <br />
+
+                    
                 </div>
             </div>
         </div>

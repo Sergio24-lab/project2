@@ -96,10 +96,16 @@ function Comprar(id) {
     Swal.fire({
         title: 'Comprar Artículo',
         html: `
-            <label for="cantidad">Cantidad:</label>
-            <input id="cantidad" type="number" min="1" placeholder="Cantidad" required class="swal2-input">
-            <label for="precio">Precio:</label>
-            <input id="precio" type="number" min="0" step="0.01" placeholder="Precio" required class="swal2-input">
+           <div>
+                <div style="margin-bottom: 1rem;">
+                    <label for="cantidad" style="display: block; margin-bottom: 0.5rem;">Cantidad:</label>
+                    <input id="cantidad" type="number" min="1" placeholder="Cantidad" required class="swal2-input" style="width: 100%;">
+                </div>
+                <div>
+                    <label for="precio" style="display: block; margin-bottom: 0.5rem;">Precio:</label>
+                    <input id="precio" type="number" min="0" step="0.01" placeholder="Precio" required class="swal2-input" style="width: 100%;">
+                </div>
+            </div>
         `,
         showCancelButton: true,
         confirmButtonText: 'Comprar',
